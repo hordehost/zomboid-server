@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# JVM setup
+: "${ZOMBOID_JVM_MAX_HEAP:=3072m}"
+sed -i "s/-Xmx[0-9]\+[mMgG]\?/-Xmx${ZOMBOID_JVM_MAX_HEAP}/" /server/ProjectZomboid64.json
+
+# Server command-line arguments
+: "${ZOMBOID_SERVER_DEBUG:=}"
+: "${ZOMBOID_SERVER_DISABLE_LOG:=}"
+: "${ZOMBOID_SERVER_DEBUG_LOG:=}"
+: "${ZOMBOID_SERVER_NAME:=my-zomboid-server}"
+: "${ZOMBOID_SERVER_ADMIN_USERNAME:=admin}"
+if [ -z "${ZOMBOID_SERVER_ADMIN_PASSWORD}" ]; then
+    ZOMBOID_SERVER_ADMIN_PASSWORD=$(openssl rand -base64 12)
+    echo "ZOMBOID_SERVER_ADMIN_PASSWORD not set, generated new password: $ZOMBOID_SERVER_ADMIN_PASSWORD"
+fi
+
+exec /server/start-server.sh \
+    -cachedir="/game-data" \
+    -ip 0.0.0.0 \
+    -port 16261 \
+    -udpport 16262 \
+    -steamvac true \
+    ${ZOMBOID_SERVER_DEBUG:+-debug} \
+    -disablelog="$ZOMBOID_SERVER_DISABLE_LOG" \
+    -debuglog="$ZOMBOID_SERVER_DEBUG_LOG" \
+    -servername "$ZOMBOID_SERVER_NAME" \
+    -adminusername "$ZOMBOID_SERVER_ADMIN_USERNAME" \
+    -adminpassword "$ZOMBOID_SERVER_ADMIN_PASSWORD"
