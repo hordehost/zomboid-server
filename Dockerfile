@@ -35,9 +35,10 @@ ARG RCON_FILE_BASE=rcon-${RCON_VERSION}-amd64_linux
 ADD --chown=spiffo:spiffo https://github.com/gorcon/rcon-cli/releases/download/v${RCON_VERSION}/${RCON_FILE_BASE}.tar.gz /tmp/rcon.tar.gz
 RUN cd /server && \
     tar xvf /tmp/rcon.tar.gz -C /tmp && \
-    mv /tmp/${RCON_FILE_BASE}/rcon /server/rcon && \
+    mv /tmp/${RCON_FILE_BASE}/rcon /server/_rcon && \
     rm -rf /tmp/${RCON_FILE_BASE}
 
+COPY rcon /server/rcon
 COPY version /server/version
 COPY health /server/health
 COPY start /server/start

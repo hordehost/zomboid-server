@@ -1,0 +1,2 @@
+#!/bin/bash
+exec /server/_rcon -a :27015 -p $ZOMBOID_SERVER_ADMIN_PASSWORD "$@"
