@@ -38,7 +38,7 @@ jobs:
           VERSION=$(docker run --rm --entrypoint /server/version hordehost/zomboid-server:latest)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Tag with version
+      - name: Tag with version and push
         uses: docker/build-push-action@v4
         with:
           push: ${{ github.event_name != 'pull_request' }}

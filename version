@@ -1,16 +1,22 @@
 #!/bin/bash
 
-# Get the version from the News_EN.txt file
-# The version is the last line that starts with [VERSION], with examples like:
-# [VERSION]41.67 and 41.68  -> 41.68
-# [VERSION]41.69            -> 41.69
-# [VERSION]41.70            -> 41.70
-# [VERSION]41.71            -> 41.71
-# [VERSION]41.72            -> 41.72
-# [VERSION]41.73            -> 41.73
-# [VERSION]41.74 - 41.77    -> 41.77
-# [VERSION]41.78            -> 41.78
-# [VERSION]41.78.11 Hotfix  -> 41.78.11
+# Start server in background and capture output
+/server/start-server.sh > server_output.txt 2>&1 &
+SERVER_PID=$!
 
-version=$(grep -i '\[VERSION\]' /server/media/lua/shared/Translate/EN/News_EN.txt | tail -n 1 | sed -E 's/\[VERSION\]//; s/ Hotfix.*//; s/.*and //; s/.* - //; s/ .*//')
-echo "$version"
+# Wait for version line and extract version
+VERSION=""
+while [ -z "$VERSION" ]; do
+    if ! kill -0 $SERVER_PID 2>/dev/null; then
+        echo "Server process died unexpectedly"
+        exit 1
+    fi
+
+    VERSION=$(grep -o "version=[0-9]*\.[0-9]*\.[0-9]*" server_output.txt | head -n1 | cut -d= -f2)
+    sleep 0.1
+done
+
+# Print version and cleanup
+echo "$VERSION"
+kill $SERVER_PID
+rm server_output.txt
