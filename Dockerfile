@@ -28,6 +28,7 @@ RUN steamcmd \
 WORKDIR /game-data
 
 COPY version /server/version
+COPY ready /server/ready
 COPY server /server/server
 
 ENTRYPOINT ["/server/server"]

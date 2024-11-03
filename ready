@@ -1,0 +1,13 @@
+#!/bin/bash
+LOG_FILE=/game-data/server-console.txt
+MESSAGE="Server is listening on port"
+
+echo "Waiting for server to start..."
+
+while [ ! -f "$LOG_FILE" ]; do
+    sleep 0.1
+done
+
+tail -n +1 -f $LOG_FILE | sed "/$MESSAGE/ q" > /dev/null
+
+echo "Server is ready"
