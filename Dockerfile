@@ -1,4 +1,6 @@
-FROM steamcmd/steamcmd:debian-12
+# Pins to a specific commit of the steamcmd's debian-12 image
+# because it retags every night, causing a lot of churn
+FROM steamcmd/steamcmd:ac10683f263f
 
 # Steam clients
 EXPOSE 16261/udp
