@@ -15,6 +15,19 @@ if [ -z "${ZOMBOID_SERVER_ADMIN_PASSWORD}" ]; then
     echo "ZOMBOID_SERVER_ADMIN_PASSWORD not set, generated new password: $ZOMBOID_SERVER_ADMIN_PASSWORD"
 fi
 
+# Bootstrap the server.ini with settings that can't be overridden or changed at runtime
+mkdir -p /game-data/Server
+SERVER_INI="/game-data/Server/${ZOMBOID_SERVER_NAME}.ini"
+if [ -f "${SERVER_INI}" ]; then
+    sed -i "s/^RCONPassword=.*/RCONPassword=${ZOMBOID_SERVER_ADMIN_PASSWORD}/" "${SERVER_INI}"
+    sed -i "s/^UPnP=.*/UPnP=false/" "${SERVER_INI}"
+else
+    cat > "${SERVER_INI}" << EOF
+UPnP=false
+RCONPassword=${ZOMBOID_SERVER_ADMIN_PASSWORD}
+EOF
+fi
+
 exec /server/start-server.sh \
     -cachedir="/game-data" \
     -port 16261 \

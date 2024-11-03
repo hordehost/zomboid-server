@@ -1,0 +1,2 @@
+#!/bin/bash
+/server/rcon -a :27015 -p $ZOMBOID_SERVER_ADMIN_PASSWORD -T 5s players

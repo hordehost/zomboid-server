@@ -29,8 +29,17 @@ RUN steamcmd \
 
 WORKDIR /game-data
 
-COPY version /server/version
-COPY ready /server/ready
-COPY server /server/server
+ARG RCON_VERSION=0.10.3
+ARG RCON_FILE_BASE=rcon-${RCON_VERSION}-amd64_linux
 
-ENTRYPOINT ["/server/server"]
+ADD --chown=spiffo:spiffo https://github.com/gorcon/rcon-cli/releases/download/v${RCON_VERSION}/${RCON_FILE_BASE}.tar.gz /tmp/rcon.tar.gz
+RUN cd /server && \
+    tar xvf /tmp/rcon.tar.gz -C /tmp && \
+    mv /tmp/${RCON_FILE_BASE}/rcon /server/rcon && \
+    rm -rf /tmp/${RCON_FILE_BASE}
+
+COPY version /server/version
+COPY health /server/health
+COPY start /server/start
+
+ENTRYPOINT ["/server/start"]
