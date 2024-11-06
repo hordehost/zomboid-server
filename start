@@ -31,6 +31,9 @@ Password=${ZOMBOID_SERVER_PASSWORD}
 EOF
 fi
 
+# Ensure the mods directory exists to avoid an innocuous error message when the server starts.
+mkdir -p /game-data/mods
+
 exec /server/start-server.sh \
     -cachedir="/game-data" \
     -port 16261 \
