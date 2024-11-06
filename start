@@ -11,14 +11,15 @@ sed -i "s/-Xmx[0-9]\+[mMgG]\?/-Xmx${ZOMBOID_JVM_MAX_HEAP}/" /server/ProjectZombo
 : "${ZOMBOID_SERVER_NAME:=my-zomboid-server}"
 : "${ZOMBOID_SERVER_ADMIN_USERNAME:=admin}"
 : "${ZOMBOID_SERVER_PASSWORD:=}"
-: "${ZOMBOID_DISCORD_TOKEN:=}"
-: "${ZOMBOID_DISCORD_CHANNEL:=}"
-: "${ZOMBOID_DISCORD_CHANNEL_ID:=}"
-
 if [ -z "${ZOMBOID_SERVER_ADMIN_PASSWORD}" ]; then
     ZOMBOID_SERVER_ADMIN_PASSWORD=$(openssl rand -base64 12)
     echo "ZOMBOID_SERVER_ADMIN_PASSWORD not set, generated new password: $ZOMBOID_SERVER_ADMIN_PASSWORD"
 fi
+
+: "${ZOMBOID_DISCORD_TOKEN:=}"
+: "${ZOMBOID_DISCORD_CHANNEL:=}"
+: "${ZOMBOID_DISCORD_CHANNEL_ID:=}"
+
 
 # Bootstrap the server.ini with settings that can't be overridden or changed at runtime
 mkdir -p /game-data/Server
@@ -27,6 +28,7 @@ if [ -f "${SERVER_INI}" ]; then
     sed -i "s/^RCONPassword=.*/RCONPassword=${ZOMBOID_SERVER_ADMIN_PASSWORD}/" "${SERVER_INI}"
     sed -i "s/^UPnP=.*/UPnP=false/" "${SERVER_INI}"
     sed -i "s/^Password=.*/Password=${ZOMBOID_SERVER_PASSWORD}/" "${SERVER_INI}"
+    sed -i "s/^DiscordEnable=.*/DiscordEnable=${ZOMBOID_DISCORD_TOKEN:+true}/" "${SERVER_INI}"
     sed -i "s/^DiscordToken=.*/DiscordToken=${ZOMBOID_DISCORD_TOKEN}/" "${SERVER_INI}"
     sed -i "s/^DiscordChannel=.*/DiscordChannel=${ZOMBOID_DISCORD_CHANNEL}/" "${SERVER_INI}"
     sed -i "s/^DiscordChannelID=.*/DiscordChannelID=${ZOMBOID_DISCORD_CHANNEL_ID}/" "${SERVER_INI}"
@@ -35,6 +37,7 @@ else
 UPnP=false
 RCONPassword=${ZOMBOID_SERVER_ADMIN_PASSWORD}
 Password=${ZOMBOID_SERVER_PASSWORD}
+DiscordEnable=${ZOMBOID_DISCORD_TOKEN:+true}
 DiscordToken=${ZOMBOID_DISCORD_TOKEN}
 DiscordChannel=${ZOMBOID_DISCORD_CHANNEL}
 DiscordChannelID=${ZOMBOID_DISCORD_CHANNEL_ID}
