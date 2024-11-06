@@ -42,7 +42,7 @@ jobs:
           VERSION=$(docker run --rm --entrypoint /server/version hordehost/zomboid-server:latest)
           TIMESTAMP=$(date '+%Y%m%d%H%M%S')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "timestamp_tag=${VERSION}+${TIMESTAMP}" >> $GITHUB_OUTPUT
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
 
       - name: Tag with version and push
         uses: docker/build-push-action@v4
@@ -51,6 +51,6 @@ jobs:
           tags: |
             hordehost/zomboid-server:latest
             hordehost/zomboid-server:${{ steps.version.outputs.version }}
-            hordehost/zomboid-server:${{ steps.version.outputs.version }}-${{ steps.version.outputs.timestamp_tag }}
+            hordehost/zomboid-server:${{ steps.version.outputs.version }}-${{ steps.version.outputs.timestamp }}
           cache-from: type=registry,ref=hordehost/zomboid-server:buildcache
           cache-to: type=registry,ref=hordehost/zomboid-server:buildcache,mode=max
