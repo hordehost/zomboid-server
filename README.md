@@ -13,6 +13,9 @@ The following environment variables control the server itself:
 | `ZOMBOID_SERVER_NAME`           | Name of the server                 | `my-zomboid-server`  |
 | `ZOMBOID_SERVER_ADMIN_USERNAME` | Admin username                     | `admin`              |
 | `ZOMBOID_SERVER_ADMIN_PASSWORD` | Admin password                     | (randomly generated) |
+| `ZOMBOID_DISCORD_TOKEN`         | Discord bot token                  | (none)               |
+| `ZOMBOID_DISCORD_CHANNEL`       | Discord channel name               | (none)               |
+| `ZOMBOID_DISCORD_CHANNEL_ID`    | Discord channel ID                 | (none)               |
 
 Game data will be stored at the path `/game-data/` in the container, and this is
 where you can mount in the server's `.ini` file or the sandbox Lua scripts.
