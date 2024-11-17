@@ -8,6 +8,8 @@ sed -i "s/-Xmx[0-9]\+[mMgG]\?/-Xmx${ZOMBOID_JVM_MAX_HEAP}/" /server/ProjectZombo
 : "${ZOMBOID_SERVER_DEBUG:=}"
 : "${ZOMBOID_SERVER_DISABLE_LOG:=}"
 : "${ZOMBOID_SERVER_DEBUG_LOG:=}"
+: "${ZOMBOID_SERVER_PORT:=16261}"
+: "${ZOMBOID_UDP_PORT:=16262}"
 : "${ZOMBOID_SERVER_NAME:=my-zomboid-server}"
 : "${ZOMBOID_SERVER_ADMIN_USERNAME:=admin}"
 : "${ZOMBOID_SERVER_PASSWORD:=}"
@@ -15,11 +17,9 @@ if [ -z "${ZOMBOID_SERVER_ADMIN_PASSWORD}" ]; then
     ZOMBOID_SERVER_ADMIN_PASSWORD=$(openssl rand -base64 12)
     echo "ZOMBOID_SERVER_ADMIN_PASSWORD not set, generated new password: $ZOMBOID_SERVER_ADMIN_PASSWORD"
 fi
-
 : "${ZOMBOID_DISCORD_TOKEN:=}"
 : "${ZOMBOID_DISCORD_CHANNEL:=}"
 : "${ZOMBOID_DISCORD_CHANNEL_ID:=}"
-
 
 # Bootstrap the server.ini with settings that can't be overridden or changed at runtime
 mkdir -p /game-data/Server
@@ -49,8 +49,8 @@ mkdir -p /game-data/mods
 
 exec /server/start-server.sh \
     -cachedir="/game-data" \
-    -port 16261 \
-    -udpport 16262 \
+    -port ${ZOMBOID_SERVER_PORT} \
+    -udpport ${ZOMBOID_UDP_PORT} \
     -steamvac true \
     ${ZOMBOID_SERVER_DEBUG:+-debug} \
     -disablelog="$ZOMBOID_SERVER_DISABLE_LOG" \

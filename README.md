@@ -13,6 +13,8 @@ The following environment variables control the server itself:
 | `ZOMBOID_SERVER_NAME`           | Name of the server                 | `my-zomboid-server`  |
 | `ZOMBOID_SERVER_ADMIN_USERNAME` | Admin username                     | `admin`              |
 | `ZOMBOID_SERVER_ADMIN_PASSWORD` | Admin password                     | (randomly generated) |
+| `ZOMBOID_SERVER_PORT`           | Main server port                   | `16261`              |
+| `ZOMBOID_UDP_PORT`              | UDP server port                    | `16262`              |
 | `ZOMBOID_DISCORD_TOKEN`         | Discord bot token                  | (none)               |
 | `ZOMBOID_DISCORD_CHANNEL`       | Discord channel name               | (none)               |
 | `ZOMBOID_DISCORD_CHANNEL_ID`    | Discord channel ID                 | (none)               |
@@ -67,8 +69,8 @@ on the wiki. These need to be passed as arguments to the `/server/start-server.s
 | `ZOMBOID_SERVER_ADMIN_PASSWORD` | `-adminpassword`          | Bypasses the enter-a-password prompt when creating a server                                                                          |
 | `ZOMBOID_SERVER_NAME`           | `-servername`             | Sets a custom server name when starting the server                                                                                   |
 | _n/a, must be default_          | `-ip <ip>`                | Handles multiple network cards (e.g. `-ip 127.0.0.1`)                                                                                |
-| _n/a, must be default_          | `-port <port>`            | Overrides the .ini option "DefaultPort"                                                                                              |
-| _n/a, must be default_          | `-udpport <port>`         | Overrides the .ini option "UDPPort"                                                                                                  |
+| `ZOMBOID_SERVER_PORT`           | `-port <port>`            | Sets the main server port                                                                                                            |
+| `ZOMBOID_UDP_PORT`              | `-udpport <port>`         | Sets the UDP server port                                                                                                             |
 | _n/a, Steam VAC is always on_   | `-steamvac <true/false>`  | Enables/disables VAC on Steam servers. Can also be set in INI file as `SteamVAC=true/false`                                          |
 | _n/a, usage unclear_            | `-steamport1 <port>`      | Sets first required Steam server port                                                                                                |
 | _n/a, usage unclear_            | `-steamport2 <port>`      | Sets second required Steam server port. Both Steam ports can also be specified in server INI file as `SteamPort1=` and `SteamPort2=` |
